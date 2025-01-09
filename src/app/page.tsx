@@ -1,5 +1,4 @@
 import AddFood from "../../components/AddFood";
-import { Tabs } from "../../components/Tab";
 
 export default function Home() {
   return (
