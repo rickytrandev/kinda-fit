@@ -1,4 +1,3 @@
-import { timeStamp } from "console"
 import React from "react"
 
 export interface MealCardProps {
