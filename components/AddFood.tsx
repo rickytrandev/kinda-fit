@@ -1,15 +1,10 @@
-"use client"
+'use client'
 
 import { useState } from "react"
 import { Tabs } from "./Tab"
 import ManualInput from "./ManualInput"
-import { MealCardProps } from "./Meals"
 
-interface AddFoodProps {
-  addMeal: (meal: MealCardProps) => void
-}
-
-function AddFood({ addMeal }: AddFoodProps) {
+function AddFood() {
   const [enabledIndex, setEnabledIndex] = useState<number>(1)
 
   const handleTabClick = (index: number) => {
@@ -26,7 +21,7 @@ function AddFood({ addMeal }: AddFoodProps) {
           handleClick={handleTabClick}
         />
       </div>
-      {enabledIndex === 1 && <ManualInput addMeal={addMeal} />}
+      {enabledIndex === 1 && <ManualInput />}
     </div>
   )
 }

@@ -2,24 +2,29 @@
 
 import React, { useState } from "react"
 import Input from "./Input"
-import { MealCardProps } from "./Meals"
+import { useMealContext } from "../context/MealContext"
 
-interface ManualInputProps {
-  addMeal: (meal: MealCardProps) => void
-}
-
-function ManualInput({addMeal} : ManualInputProps) {
+function ManualInput() {
   const [foodName, setFoodName] = useState<string>("")
   const [protein, setProtein] = useState<number>(0)
   const [carbs, setCarbs] = useState<number>(0)
   const [fats, setFats] = useState<number>(0)
   const [calories, setCalories] = useState<number>(0)
   const [portion, setPortion] = useState<number>(0)
+  const { addMeal } = useMealContext()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const timestamp = Date.now()
-    addMeal({name: foodName, protein, carbs, fats, calories, portion, timestamp})
+    addMeal({
+      name: foodName,
+      protein,
+      carbs,
+      fats,
+      calories,
+      portion,
+      timestamp,
+    })
 
     setCalories(0)
     setProtein(0)

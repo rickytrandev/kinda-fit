@@ -1,4 +1,7 @@
+'use client'
+
 import React from "react"
+import { useMealContext } from "../context/MealContext"
 
 export interface MealCardProps {
   timestamp: number
@@ -10,10 +13,6 @@ export interface MealCardProps {
   calories: number
 }
 
-interface MealProps {
-  meals: MealCardProps[]
-}
-
 function MealCard({
   carbs,
   protein,
@@ -21,7 +20,7 @@ function MealCard({
   name,
   portion,
   calories,
-  timestamp
+  timestamp,
 }: MealCardProps) {
   const formattedDate = new Date(timestamp).toLocaleString()
 
@@ -36,7 +35,9 @@ function MealCard({
   )
 }
 
-function Meals({ meals }: MealProps) {
+function Meals() {
+  const { meals } = useMealContext()
+
   return (
     <div className="border border-gray-200 rounded p-4 flex flex-col gap-4">
       <h1 className="text-2xl">Meals</h1>
