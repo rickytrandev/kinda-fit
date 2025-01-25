@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import Input from "./Input"
 import { useMealContext } from "../context/MealContext"
 
+
 function ManualInput() {
   const [foodName, setFoodName] = useState<string>("")
   const [protein, setProtein] = useState<number>(0)
@@ -13,9 +14,10 @@ function ManualInput() {
   const [portion, setPortion] = useState<number>(0)
   const { addMeal } = useMealContext()
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const timestamp = Date.now()
+    const timestamp = new Date()
+
     addMeal({
       name: foodName,
       protein,
@@ -23,7 +25,7 @@ function ManualInput() {
       fats,
       calories,
       portion,
-      timestamp,
+      timestamp: timestamp.getTime(),
     })
 
     setCalories(0)
