@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Macro Tracker  
 
-## Getting Started
+**Tired of features locked behind a paywall? Build your own!** 
 
-First, run the development server:
+This app is my take on a MyFitnessPal-inspired macro tracker, designed to track your daily calories and macronutrient goals without subscriptions or limitations.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Purpose  
+MyFitnessPal’s once-free features are now behind a paywall, so I decided to make my own macro tracker. It’s simple, customizable, and open-source for anyone who wants to stay on top of their nutrition goals without the hassle.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features  
+- Set Calorie & Macro Goals: Customize daily targets for carbs, protein, and fats.
+- Food Logging: Manually add food items and their nutritional values to track your intake.
+- Real-time Macro Tracking: Get a daily breakdown of consumed vs. remaining macros.
+- Firestore Integration: Your data is saved in a Firestore database for seamless updates and persistence.
+- Simple UI: Clean and responsive design to keep things user-friendly.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Planned Features
+- Searchable Food Database: Quickly find and log foods you've added.
+- Recipe Builder: Calculate macros for recipes and save them for future use.
+- Dynamic Suggestions: AI-powered meal suggestions based on your remaining macros.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# More to come soon...
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
