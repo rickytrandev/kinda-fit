@@ -1,9 +1,11 @@
-'use client'
+"use client"
 
 import React from "react"
 import { useMealContext } from "../context/MealContext"
+import DeleteBtn from "./DeleteBtn"
 
 export interface MealCardProps {
+  id: string
   timestamp: number
   carbs: number
   protein: number
@@ -14,6 +16,7 @@ export interface MealCardProps {
 }
 
 function MealCard({
+  id,
   carbs,
   protein,
   fats,
@@ -22,14 +25,18 @@ function MealCard({
   calories,
   timestamp,
 }: MealCardProps) {
+  const { deleteMeal } = useMealContext()
   const formattedDate = new Date(timestamp).toLocaleString()
 
   return (
     <div>
-      <div className="flex flex-col gap-2 bg-gray-200 rounded p-2">
-        <p>{`${name} - ${portion}g`}</p>
-        <p>{`Calories: ${calories} | Protein: ${protein} | Carbs: ${carbs} | Fats: ${fats}`}</p>
-        <p>{`${formattedDate}`}</p>
+      <div className="flex justify-between gap-2 bg-gray-200 rounded p-4">
+        <div>
+          <p>{`${name} - ${portion}g`}</p>
+          <p>{`Calories: ${calories} | Protein: ${protein} | Carbs: ${carbs} | Fats: ${fats}`}</p>
+          <p>{`${formattedDate}`}</p>
+        </div>
+        <DeleteBtn id={id} deleteMeal={deleteMeal} />
       </div>
     </div>
   )
@@ -43,7 +50,8 @@ function Meals() {
       <h1 className="text-2xl">Meals</h1>
       {meals.map((meal) => (
         <MealCard
-          key={meal.timestamp}
+          id={meal.id}
+          key={meal.id}
           name={meal.name}
           calories={meal.calories}
           portion={meal.portion}
