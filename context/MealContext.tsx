@@ -2,13 +2,23 @@
 
 import { createContext, ReactNode, useContext, useEffect, useReducer } from "react"
 import { MealCardProps } from "../components/Meals"
-import { collection, onSnapshot, doc, addDoc, deleteDoc } from "firebase/firestore"
+import { collection, onSnapshot, doc, addDoc, deleteDoc, updateDoc } from "firebase/firestore"
 import { db } from "../lib/firebase"
 
-interface MealContextProps {
+interface ContextProps {
+  goals: GoalsProps
   meals: MealCardProps[]
   addMeal: (meal: AddMealProps) => Promise<void>
-  deleteMeal: (id: string) => void
+  deleteMeal: (id: string) => Promise<void>
+  addGoal: (goal: GoalsProps) => Promise<void>
+  updateGoal: (goal: GoalsProps, id: string) => Promise<void>
+}
+
+interface GoalsProps {
+  dailyCalorie: null | number
+  dailyProtein: null | number
+  dailyFat: null | number
+  dailyCarb: null | number
 }
 
 interface AddMealProps {
@@ -21,13 +31,22 @@ interface AddMealProps {
   calories: number
 }
 
-type Action =
-  | { type: "set_meals"; meals: MealCardProps[] }
+const initialGoals = {
+  dailyCalorie: null,
+  dailyProtein: null,
+  dailyFat: null,
+  dailyCarb: null
+}
 
-const reducer = (state: MealCardProps[], action: Action) => {
+type Action = { type: "set_meals"; meals: MealCardProps[] }
+
+const reducer = (
+  state: { meals: MealCardProps[]; goals: GoalsProps },
+  action: Action
+) => {
   switch (action.type) {
     case "set_meals":
-      return action.meals
+      return {...state , meals: action.meals}
 
     default:
       return state
@@ -35,11 +54,11 @@ const reducer = (state: MealCardProps[], action: Action) => {
 }
 
 //create context
-const MealContext = createContext<MealContextProps | undefined>(undefined)
+const AppContext = createContext<ContextProps | undefined>(undefined)
 
 //provide the context - manages state and addMeal function
 export const MealProvider = ({ children }: { children: ReactNode }) => {
-  const [meals, dispatch] = useReducer(reducer, [])
+  const [state, dispatch] = useReducer(reducer, {meals : [], goals: initialGoals })
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "meals"), (snapshot) => {
@@ -61,7 +80,25 @@ export const MealProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe()
   }, [])
 
-  // TO-DO implement firebase function to add, delete meals
+  const addGoal = async (goals: GoalsProps) => {
+    try {
+      const docRef = await addDoc(collection(db, 'goals'), goals)
+      console.log("Document written with ID: ", docRef.id)
+    } catch (e) {
+      console.error("Error adding document: ", e)
+    }
+  }
+
+  const updateGoal = async (goal: GoalsProps, id: string) => {
+    try {
+      const goalDoc = doc(db, "goals", id)
+      await updateDoc(goalDoc, goal as any)
+    } catch (e) {
+
+    }
+  }
+
+
   const addMeal = async (meal: AddMealProps) => {
     try {
       const docRef = await addDoc(collection(db, "meals"), meal)
@@ -71,25 +108,25 @@ export const MealProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-    const deleteMeal = async (id: string) => {
-      try {
-        const docRef = doc(db, 'meals', id)
-        await deleteDoc(docRef)
-        console.log('Document delete with ID: ', id)
-      } catch (e) {
-        console.error('Error deleting document: ', e)
-      }
+  const deleteMeal = async (id: string) => {
+    try {
+      const docRef = doc(db, "meals", id)
+      await deleteDoc(docRef)
+      console.log("Document delete with ID: ", id)
+    } catch (e) {
+      console.error("Error deleting document: ", e)
     }
-  
-    return (
-      <MealContext.Provider value={{ meals, addMeal, deleteMeal }}>
-        {children}
-      </MealContext.Provider>
-    )
+  }
+
+  return (
+    <AppContext.Provider value={{ meals: state.meals, goals: state.goals, addMeal, deleteMeal, addGoal, updateGoal }}>
+      {children}
+    </AppContext.Provider>
+  )
 }
 
-export const useMealContext = () => {
-  const context = useContext(MealContext)
+export const useAppContext = () => {
+  const context = useContext(AppContext)
   if (!context)
     throw new Error("useMealContext must be used within a MealProvider")
 
