@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import Input from "./Input"
-import { useMealContext } from "../context/MealContext"
+import { useAppContext } from "../context/MealContext"
 
 
 function ManualInput() {
@@ -12,7 +12,7 @@ function ManualInput() {
   const [fats, setFats] = useState<number>(0)
   const [calories, setCalories] = useState<number>(0)
   const [portion, setPortion] = useState<number>(0)
-  const { addMeal } = useMealContext()
+  const { addMeal } = useAppContext()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
